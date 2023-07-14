@@ -1,19 +1,5 @@
-big files should be pulled during installation of the package on the enduser/server
-prefer to use a pull deployment model
+# NGS Infrastructure
 
-this service can be installed with `meson install` and uninstalled with `meson uninstall`
-or `ninja install`  and `ninja uninstall`
+This repo is intended to collect documents and code for the setup of our NGS analysis pipeline software infrastructure.
 
-
-to setup the ci infra for the ngs_pipeline (from source):
-```
-# clone the repo
-git@github.com:feiloo/ngs_infra.git
-
-cd ngs_infra
-# setup
-meson setup /tmp/ngs_infra_build
-cd /tmp/ngs_infra_build
-meson compile
-meson install
-```
+E.g. see design_docs/ for documentation and requiements documents.
