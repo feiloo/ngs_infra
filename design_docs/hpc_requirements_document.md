@@ -1,33 +1,41 @@
-# Draft: Technical requirements for HPC in Molecular Pathology:
+# Draft: Usecases for Computation (HPC) in Molecular Pathology:
 
 
 | Author        | Florian Hoelscher   |
 | ----          | ----                |
-| Date          |          14.07.2023 |
-| Draft version |                   4 |
+| Date          |          27.07.2023 |
+| Draft version |                   5 |
 
 ----
 
-This is a draft requirements estimation for HPC in molecular Pathology from the Institute of Pathology at the UKB.
+This is a draft requirements document for HPC usecases for molecular Pathology at the UKB Institute of Pathology.
 It is very much subject to change!
-It estimates the requirements for clinical/production hpc workloads.
 The users are Patrick Basitta, Florian Hoelscher.
-
-Because we currently have no access to GPU Resources, we could not estimate or develop GPU Acceleration for our "Pipeline".
-
 Laxmi Gupta is working on Digital Pathology and has her own different requirements.
 
-We require HPC for batch jobs to analyse gene-data.
 Our HPC client software will soon be [Nextflow](https://www.nextflow.io/) or if necessary custom adapter scripts/software.
 See the description below about Nextflow.
 
-Our two usecases are currently integration testing and clinical HPC jobs.
+#### Clarification:
 
-## Usecase: Clinical jobs 
+By HPC or high performance computation, we (Patrick and Florian) mean computation that runs comparitively fast to other workloads.
+It doesnt entail for us, how or where the computation takes place, whether supercomputer or a high available cluster.
+
+#### Motivation
+
+The rapid developments in bioinformatics and next generation sequencing cause an increase in the compute and storage requirements.
+Additionally, we intend to speed up the patient care by accelerating our computational analyses.
+Some analyses and new tools lend themself to gpu acceleration, so we need to evaluate and learn the use of accelerators.
+
+## Usecases
+
+### Usecase: New clinical pipeline
 
 Clinical jobs are batch jobs with varying batch size.
+The batch job requirement stems from our usage of batch sequencers.
+The pipeline is based on Nextflow and the development can be followed on our [github.com/cio-abcd](https://github.com/cio-abcd/variantinterpretation).
 
-Cliical jobs should be done in less than 2 days lower the delay of patient care and burden on pathologist because of work-buildup
+Clinical jobs should be done in less than 2 days lower the delay of patient care and burden on pathologist because of work-buildup
 Clinical jobs must be done within a week, to not cause issues with the above
 
 There are different clinical job types below.
@@ -39,9 +47,9 @@ The table specifies high average baseline requirements for running patient-cases
 | big targeted panel   | 8          | 32             | 8       |             ? |        ? | 200MB       |
 | whole exome analysis | 15         | 160            | 128     |             ? |        ? | 40GB        |
 
-## Usecase: Continuous integration test jobs
+### Usecase: Continuous integration for new clinical pipeline
 
-These jobs are used to continuously verify every change to our analysis against real data.
+These jobs are used to continuously verify every change to our new clinical bach analysis jobs against real data.
 
 Test jobs will likely run a few of each clinical job type.
 More than 3 test job executions per week are preferable to aid development.
@@ -51,15 +59,27 @@ Test jobs must be done within a month to get frequent updates and releases
 Test jobs can likely be preempted or cancelled and rescheduled for running higher priority jobs.
 
 
-In a year there can possibly be research hpc jobs that are similar to whole exome analysis type jobs, 
-but lower priority and preferably preemptable.
+### Usecase: Interactive research analysis or development jobs
 
-Additionally, we ordered an Supermicro GPU HPC Server to research and possibly integrate novel gpu accelerated algorithms into our analysis.
+To integrate and update new tools into our production environment, we need to evaluate, develope and manually test them.
+These research hpc jobs that can range from very small to whole exome analysis type jobs like above.
+
+For these jobs, we ordered an Supermicro GPU HPC Server to research and possibly integrate novel gpu accelerated algorithms into our analysis.
 As of now we still dont have access to this server.
+
+
+### Usecase: Legacy clinical pipeline, CLC 
+
+(Included for completeness)
+We currently also use CLC for our production tasks, but intend to establish the new Nextflow based pipeline.
+This currently runs on windows nodes with the CLC Server Software on ukb1740 and the workers: ukb1741, ukb1742, ..., ukb1746
+As of now, We indend to keep the CLC Setup because of our experience with it and the nice interactivity of this tool.
 
 
 ### About Nextflow and our Analysis Pipeline
 Nextflow has multiple "executors", e.g. [slurm executor](https://nextflow.io/docs/latest/executor.html?highlight=slurm#slurm) or [kubernetes](https://nextflow.io/docs/latest/kubernetes.html)
 Nextflow can package "tasks" inside of containers, so running containers and the issues of "nested containerization" have to be considered for deployment.
 
-The Nextflow Software was chosen by our work-group [CIO-ABCD](https://www.ciobonn.de/) and the development can be followed on our [github.com/cio-abcd](https://github.com/cio-abcd/variantinterpretation).
+The Nextflow Software was chosen by our work-group [CIO-ABCD](https://www.ciobonn.de/) 
+
+Because we currently have no access to GPU Resources, we could not estimate or develop GPU Acceleration for our "Pipeline".
