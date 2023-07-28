@@ -1,4 +1,4 @@
-# Draft: HPC service agreement
+# Draft: HPC implementation
 
 
 | Author        | Florian Hoelscher   |
